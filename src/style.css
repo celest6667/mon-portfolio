@@ -1,182 +1,251 @@
+/*---------- FONTS ----------*/
 @font-face {
-    font-family: 'ppneuemontreal';
-    src: url(/public/font/ppneuemontreal-book.woff);
-  }
-  @font-face {
-    font-family: 'ppneuemontreal-black';
-    src: url(/public/font/ppneuemontreal-bold.woff);
-  }
-  /* Reset complet et plein écran */
-  html, body {
-    margin: 0; padding: 0;
-    width: 100%; height: 100%;
-    overflow: hidden;
-    background: #fff;
-    position: relative;
-    overscroll-behavior: none;
-    touch-action: none;
-  }
-  .navbar {
-    position: fixed;
-    top: 1rem; left: 0;
-    width: 100%; height: 60px;
-    display: flex; justify-content: flex-end; align-items: center;
-    padding: 0 3rem;
-    background: transparent; z-index: 10;
-    box-sizing: border-box;
-    font-family: 'ppneuemontreal'; font-size: 1.5rem;
-  }
-  .navbar .logo {
-    position: absolute; left: 50%;
-    transform: translateX(-50%);
-    color: #000; user-select: none;
-  }
-  .navbar a.contact {
-    color: #000; text-decoration: none;
-    margin-left: auto; margin-right: 1rem;
-    user-select: none; -webkit-user-select: none;
-    -moz-user-select: none; -ms-user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  /* Overlay flou & menu */
-  .overlay {
-    position: fixed; inset: 0;
-    background: rgba(255,255,255,0.6);
-    backdrop-filter: blur(10px);
-    z-index: 8;
-    display: flex; flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding-left: 7rem;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.4s ease;
-  }
-  .overlay.visible {
-    opacity: 1; pointer-events: auto;
-  }
-  .overlay .menu {
-    width: 100%;
-  }
-  .overlay .menu ul {
-    list-style: none; padding: 0; margin: 0;
-    text-align: left;
-  }
-  .overlay .menu li {
-    margin: 3.5rem 0; font-size: 5rem;
-    line-height: 1.2; font-family: 'ppneuemontreal-black';
-  }
-/* liens grisés par défaut */
-.overlay .menu a {
-color: rgba(0, 0, 0, 0.5);
-text-decoration: none;
-transition: color 0.3s ease;
+  font-family: 'ppneuemontreal';
+  src: url(/public/font/ppneuemontreal-book.woff) format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ppneuemontreal-black';
+  src: url(/public/font/ppneuemontreal-medium.woff) format("woff");
+  font-weight: bold;
+  font-style: normal;
 }
 
-/* au survol, on passe en noir plein */
-.overlay .menu a:hover {
-color: rgba(0, 0, 0, 1);
+/*---------- RESET & SCROLLBAR ----------*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-  /* Hamburger menu styles */
-  .ham {
-    cursor: pointer; -webkit-tap-highlight-color: transparent;
-    transition: transform 400ms; user-select: none;
-    width: 70px; height: 70px;
-  }
-  .hamRotate.active { transform: rotate(45deg); }
-  .line {
-    fill: none;
-    transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
-    stroke: #000; stroke-width: 3; stroke-linecap: round;
-  }
-  .ham1 .top    { stroke-dasharray: 40 139; }
-  .ham1 .bottom { stroke-dasharray: 40 180; }
-  .ham1.active .top    { stroke-dashoffset: -98px; }
-  .ham1.active .bottom { stroke-dashoffset: -138px; }
-  /* Texte animé en fond */
-  .scrolling-text {
-    position: absolute; top: 0; left: 0;
-    width: 100%; height: 100%;
-    display: flex; align-items: center;
-    overflow: hidden; z-index: 0;
-    user-select: none; -webkit-user-select: none;
-    -moz-user-select: none; -ms-user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .scrolling-text .rail {
-    display: flex; will-change: transform;
-    pointer-events: none;
-  }
-  .scrolling-text .rail h4 {
-    white-space: nowrap;
-    font-family: "papyrus-std", sans-serif;
-    font-size: 6rem; margin: 0 12rem 0 0;
-    color: #000;
-    user-select: none; -webkit-user-select: none;
-    -moz-user-select: none; -ms-user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  /* Canvas en premier plan */
-  canvas {
-    position: absolute; top: 0; left: 0;
-    width: 100%; height: 100%;
-    display: block; z-index: 1;
-  }
-/* Bouton « À propos » */
+
+/* On interdit tout scroll horizontal */
+html {
+  overflow-x: hidden;
+}
+
+/* Corps de page, uniquement scroll vertical */
+body {
+  overflow-y: auto;
+  overscroll-behavior: none;
+  touch-action: none;
+  background: #fff;
+  min-height: 100vh;
+  font-family: 'ppneuemontreal', sans-serif;
+}
+
+/* (optionnel) Masquer la barre de défilement sur WebKit tout en gardant le scroll actif */
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+/*---------- SECTION ACCUEIL (HERO) ----------*/
+.section-acceuil {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden; /* nécessaire pour le canvas et le texte défilant */
+}
+
+/*---------- NAVBAR ----------*/
+.navbar {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 3rem;
+  background: transparent;
+  font-size: 1.5rem;
+  z-index: 10;
+}
+.navbar .logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #000;
+  user-select: none;
+}
+.navbar a.contact {
+  margin-left: auto;
+  margin-right: 1rem;
+  color: #000;
+  text-decoration: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*---------- OVERLAY MENU ----------*/
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 7rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 8;
+}
+.overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.overlay .menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.overlay .menu li {
+  margin: 3.5rem 0;
+  font-family: 'ppneuemontreal-black';
+  font-size: 5rem;
+  line-height: 1.2;
+}
+.overlay .menu a {
+  color: rgba(0,0,0,0.5);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.overlay .menu a:hover {
+  color: rgba(0,0,0,1);
+}
+
+/*---------- HAMBURGER ICON ----------*/
+.ham {
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 400ms;
+  user-select: none;
+}
+.hamRotate.active {
+  transform: rotate(45deg);
+}
+.line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
+}
+.ham1 .top    { stroke-dasharray: 40 139; }
+.ham1 .bottom { stroke-dasharray: 40 180; }
+.ham1.active .top    { stroke-dashoffset: -98px; }
+.ham1.active .bottom { stroke-dashoffset: -138px; }
+
+/*---------- TEXTE DÉFILANT ----------*/
+.scrolling-text {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;    /* coupe les rails qui dépassent */
+  z-index: 0;
+}
+.scrolling-text .rail {
+  display: flex;
+  will-change: transform;
+  pointer-events: none;
+}
+.scrolling-text .rail h4 {
+  margin: 0 12rem 0 0;
+  white-space: nowrap;
+  font-family: "papyrus-std", sans-serif;
+  font-size: 6rem;
+  color: #000;
+  user-select: none;
+}
+
+/*---------- CANVAS THREE.JS ----------*/
+canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+}
+
+/*---------- BOUTON « À PROPOS » ----------*/
 .button {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);      /* PLUS DE scale() */
-    width: 60px;                      /* largeur natif légèrement + grande */
-    height: 60px;                     /* hauteur fixe */
-    border-radius: 50%;
-    border: 1px solid #000;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    overflow: hidden;
-    transition:
-      width 0.3s ease,               /* on ne scale plus, on change juste la largeur */
-      border-radius 0.3s ease;
-    z-index: 11;
-  }
-  
-  /* Icône */
-  .svgIcon {
-    width: 14px;
-    transform: rotate(180deg);
-    transition: transform 0.3s;
-  }
-  
-  /* Label caché par défaut */
-  .button::before {
-    content: "À propos";
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 0;
-    white-space: nowrap;
-    color: #000;
-    transition: font-size 0.3s ease;
-    pointer-events: none;
-    font-family: 'ppneuemontreal';
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  
-  /* Au survol : on n’applique plus de scale, on ouvre juste la largeur */
-  .button:hover {
-    width: 160px;
-    border-radius: 50px;
-  }
-  
-  .button:hover .svgIcon {
-    transform: translateY(205%);
-  }
-  
-  .button:hover::before {
-    font-size: 1.3rem;  /* ou 13px selon ton besoin */
-  }
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px; height: 60px;
+  border: 1px solid #000;
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: width 0.3s ease, border-radius 0.3s ease;
+  z-index: 11;
+}
+.svgIcon {
+  width: 14px;
+  transform: rotate(180deg);
+  transition: transform 0.3s;
+}
+.button::before {
+  content: "À propos";
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-family: 'ppneuemontreal';
+  font-size: 0;
+  white-space: nowrap;
+  transition: font-size 0.3s ease;
+  pointer-events: none;
+}
+.button:hover {
+  width: 160px;
+  border-radius: 50px;
+}
+.button:hover .svgIcon {
+  transform: translateY(205%);
+}
+.button:hover::before {
+  font-size: 1.3rem;
+}
+
+/*---------- SECTION INTRO ----------*/
+.section--intro {
+  width: 100%;
+  padding: 0 0 2rem 0;
+}
+.intro__container {
+  width: 100%;
+  padding: 0 3rem; /* tu peux réduire si tu veux encore + à gauche */
+}
+.intro__title {
+  font-family: 'ppneuemontreal-black';
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  line-height: 1.2;
+  margin: 0;
+  color: #000;
+  white-space: pre-line;
+}
+.intro__subtitle {
+  font-family: 'ppneuemontreal';
+  font-size: clamp(1.2rem, 2.5vw, 1.25rem);
+  line-height: 1.5;
+  margin: 1.5rem 0 0;
+  color: #333;
+  max-width: 800px;
+}

@@ -1,8 +1,9 @@
 import './style.css';
-import * as THREE from 'https://unpkg.com/three@0.160.1/build/three.module.js';
-import { gsap } from 'https://unpkg.com/gsap@3.12.2/index.js';
-import { Observer } from 'https://unpkg.com/gsap@3.12.2/Observer.js';
-gsap.registerPlugin(Observer);
+import * as THREE     from 'https://unpkg.com/three@0.160.1/build/three.module.js';
+import { gsap }       from 'https://unpkg.com/gsap@3.12.2/index.js';
+import { ScrollTrigger } from 'https://unpkg.com/gsap@3.12.2/ScrollTrigger.js';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Toggle overlay
 const ham     = document.getElementById('hamburger');
@@ -20,7 +21,6 @@ document.getElementById('backToTop').addEventListener('click', () => {
 });
 
 // Bloquer la roulette de scroll
-window.addEventListener('wheel', e => e.preventDefault(), { passive: false });
 
 // —— Scène & Caméra ——
 const scene  = new THREE.Scene();
@@ -311,4 +311,3 @@ const loopPadding  = rootFontSize * 10; // 10rem
 const itemsArray   = gsap.utils.toArray('.scrolling-text .rail h4');
 const tlLoop       = horizontalLoop(itemsArray, { repeat: -1, paddingRight: loopPadding, speed: 1 });
 
-// (Observer.create a été retiré pour ne plus écouter la molette)
