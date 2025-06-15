@@ -87,7 +87,7 @@ body::-webkit-scrollbar {
   position: fixed;
   inset: 0;
   background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(30px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -225,22 +225,38 @@ canvas {
 }
 
 /*---------- SECTION INTRO ----------*/
+/*---------- SECTION INTRO ----------*/
 .section--intro {
   width: 100%;
   padding: 0 0 2rem 0;
 }
+
+/* Container flex : texte à gauche, bouton à droite */
 .intro__container {
-  width: 100%;
-  padding: 0 3rem; /* tu peux réduire si tu veux encore + à gauche */
+  display: flex;
+  align-items: flex-start;        /* on aligne en haut */
+  justify-content: space-between; /* espace maximum entre les deux */
+  padding: 0 3rem;                /* marge latérale */
+  box-sizing: border-box;
 }
+
+/* Texte (titre + paragraphe) */
+.intro__text {
+  flex: 1 1 60%;      /* occupe jusqu’à 60% de la largeur */
+  max-width: 60%;
+}
+
+/* Titre */
 .intro__title {
   font-family: 'ppneuemontreal-black';
-  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-size: clamp(5rem, 8vw, 8rem);
   line-height: 1.2;
   margin: 0;
   color: #000;
   white-space: pre-line;
 }
+
+/* Paragraphe */
 .intro__subtitle {
   font-family: 'ppneuemontreal';
   font-size: clamp(1.2rem, 2.5vw, 1.25rem);
@@ -248,4 +264,60 @@ canvas {
   margin: 1.5rem 0 0;
   color: #333;
   max-width: 800px;
+}
+
+/* Wrapper pour l’action (décale légèrement vers le bas si besoin) */
+.intro__action {
+  flex: 0 0 auto;
+  margin-top: 40.8rem;    /* ajuste ici la distance sous le titre */
+}
+
+/*---------- BOUTON “En savoir plus” ----------*/
+.btn-hover {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'ppneuemontreal';
+  font-size: clamp(1.2rem, 2.5vw, 1.25rem);
+  color: #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* barre animée sous le texte */
+.btn-hover::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition:
+    width 0.3s ease,
+    left  0.3s ease;
+}
+
+/* la flèche, initialement cachée et décalée */
+.btn-hover__arrow {
+  display: inline-block;
+  margin-left: 0.5ch;
+  opacity: 0;
+  transform: translateX(-0.5em);
+  transition:
+    transform 0.3s ease,
+    opacity   0.3s ease;
+}
+
+/* au survol : on étend la barre et on fait apparaître la flèche */
+.btn-hover:hover::after {
+  left: 0;
+  width: 100%;
+}
+.btn-hover:hover .btn-hover__arrow {
+  opacity: 1;
+  transform: translateX(0);
 }
