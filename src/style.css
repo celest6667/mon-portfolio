@@ -225,94 +225,96 @@ canvas {
 }
 
 /*---------- SECTION INTRO ----------*/
-/*---------- SECTION INTRO ----------*/
 .section--intro {
   width: 100%;
-  padding: 0 0 2rem 0;
-}
-
-/* Container flex : texte à gauche, bouton à droite */
-.intro__container {
-  display: flex;
-  align-items: flex-start;        /* on aligne en haut */
-  justify-content: space-between; /* espace maximum entre les deux */
-  padding: 0 3rem;                /* marge latérale */
+  padding: 2rem 1.5rem;
   box-sizing: border-box;
 }
 
-/* Texte (titre + paragraphe) */
+/* Container flex : texte / image / action */
+.intro__container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 3rem;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+
+/* Bloc texte */
 .intro__text {
-  flex: 1 1 60%;      /* occupe jusqu’à 60% de la largeur */
+  flex: 1 1 60%;
   max-width: 60%;
+  min-width: 280px;
+  order: 2;
 }
 
 /* Titre */
 .intro__title {
   font-family: 'ppneuemontreal-black';
-  font-size: clamp(5rem, 8vw, 8rem);
+  /* Desktop : jusqu’à 10rem */
+  font-size: clamp(4rem, 8vw, 10rem);
   line-height: 1.2;
-  margin: 0;
+  margin: 0 0 1rem;
   color: #000;
   white-space: pre-line;
 }
 
-/* Paragraphe */
+/* Sous-titre */
 .intro__subtitle {
   font-family: 'ppneuemontreal';
-  font-size: clamp(1.2rem, 2.5vw, 1.25rem);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
   line-height: 1.5;
-  margin: 1.5rem 0 0;
+  margin: 0;
   color: #333;
   max-width: 800px;
 }
 
-/* Wrapper pour l’action (décale légèrement vers le bas si besoin) */
+/* Bloc action / bouton */
 .intro__action {
   flex: 0 0 auto;
-  margin-top: 40.8rem;    /* ajuste ici la distance sous le titre */
+  margin-top: auto;  /* pousse en bas du container */
+  order: 3;
 }
 
-/*---------- BOUTON “En savoir plus” ----------*/
+/* Bouton “En savoir plus” */
 .btn-hover {
   position: relative;
   display: inline-flex;
   align-items: center;
   background: none;
   border: none;
-  padding: 0;
+  padding: 0.25em 0;
   font-family: 'ppneuemontreal';
-  font-size: clamp(1.2rem, 2.5vw, 1.25rem);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
   color: #000;
   cursor: pointer;
   overflow: hidden;
 }
 
-/* barre animée sous le texte */
+/* Barre animée */
 .btn-hover::after {
   content: "";
   position: absolute;
-  bottom: -2px;
+  bottom: 0;
   left: 50%;
   width: 0;
   height: 2px;
   background: currentColor;
-  transition:
-    width 0.3s ease,
-    left  0.3s ease;
+  transition: width 0.3s ease, left 0.3s ease;
 }
 
-/* la flèche, initialement cachée et décalée */
+/* Flèche */
 .btn-hover__arrow {
   display: inline-block;
   margin-left: 0.5ch;
   opacity: 0;
   transform: translateX(-0.5em);
-  transition:
-    transform 0.3s ease,
-    opacity   0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* au survol : on étend la barre et on fait apparaître la flèche */
+/* Hover */
 .btn-hover:hover::after {
   left: 0;
   width: 100%;
@@ -320,4 +322,46 @@ canvas {
 .btn-hover:hover .btn-hover__arrow {
   opacity: 1;
   transform: translateX(0);
+}
+
+/* ==== MEDIA QUERIES ==== */
+@media (max-width: 900px) {
+  .intro__container {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 2rem;
+  }
+  .intro__image {
+    order: 1;
+    margin: 0 0 1.5rem;
+  }
+  .intro__text {
+    order: 2;
+    max-width: 100%;
+    text-align: center;
+  }
+  .intro__action {
+    order: 3;
+    margin-top: 1.5rem;
+    width: 100%;
+    text-align: center;
+    margin-left: 2rem;
+  }
+
+  /* Tablette : un peu plus grand aussi */
+  .intro__title {
+    font-size: clamp(3.5rem, 10vw, 9rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .intro__title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+  }
+  .intro__subtitle {
+    font-size: clamp(0.9rem, 4vw, 1.1rem);
+  }
+  .btn-hover {
+    font-size: clamp(0.9rem, 4vw, 1.1rem);
+  }
 }
